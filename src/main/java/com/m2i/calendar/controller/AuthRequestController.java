@@ -42,7 +42,7 @@ public class AuthRequestController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> signin(@RequestBody SigninRequest dto) throws Exception {
-        // UsernamePasswordAuthenticationToken : implementation of the Authtication interface which specifies
+        // UsernamePasswordAuthenticationToken : implementation of the Authentication interface which specifies
         // that the user wants to authenticate using a username and password
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(dto.getPseudo(), dto.getPassword());
         Authentication authentication;

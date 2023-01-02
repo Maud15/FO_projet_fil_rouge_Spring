@@ -29,7 +29,7 @@ public class UserService {
         if(alreadyExist) {
             throw new UserAlreadyExistsException(dto.getPseudo());
         } else {
-            User newUser = new User(dto.getEmail(), dto.getPseudo(), encoder.encode(dto.getPassword()), dto.getFirstname(), dto.getLastname());
+            User newUser = new User(dto.getPseudo(), dto.getEmail(), encoder.encode(dto.getPassword()), dto.getFirstname(), dto.getLastname());
             //Define role
             Role roleUser = roleRepo.findByName(RoleEnum.ROLE_USER);
             List<Role> roleList = Collections.singletonList(roleUser);
