@@ -13,9 +13,9 @@ public class UserCalendarRightsService {
     @Autowired
     private UserCalendarRightsRepository userCalendarRightsRepository;
 
-    public void create(Long userId, Long calendarId, String rights){
-        UserCalendarRightsId userCalendarRightsId = new UserCalendarRightsId(userId,calendarId);
-        UserCalendarRights userCalendarRights = new UserCalendarRights( userCalendarRightsId, rights );
+    public void create(User user, Calendar calendar, String rights){
+        UserCalendarRightsId userCalendarRightsId = new UserCalendarRightsId(user.getId(),calendar.getId());
+        UserCalendarRights userCalendarRights = new UserCalendarRights( userCalendarRightsId,  user, calendar, rights );
         userCalendarRightsRepository.save(userCalendarRights);
     }
 

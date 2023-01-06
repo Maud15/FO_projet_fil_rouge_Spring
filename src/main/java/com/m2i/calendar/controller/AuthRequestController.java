@@ -46,7 +46,7 @@ public class AuthRequestController {
         try {
             User newUser = userService.signup(dto);
             Calendar newCalendar = calendarService.create(true);
-            userCalendarRightsService.create(newUser.getId(), newCalendar.getId(), "owner" );
+            userCalendarRightsService.create(newUser, newCalendar, "owner" );
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch(UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

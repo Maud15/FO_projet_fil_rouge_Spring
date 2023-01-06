@@ -27,9 +27,11 @@ public class UserCalendarRights {
 
     }
 
-    public UserCalendarRights(UserCalendarRightsId userCalendarRightsId, String rights) {
+    public UserCalendarRights(UserCalendarRightsId userCalendarRightsId, User user, Calendar calendar, String rights) {
         this.userCalendarRightsId = userCalendarRightsId;
         this.rights = rights;
+        this.calendar = calendar;
+        this.user = user;
     }
 
     //

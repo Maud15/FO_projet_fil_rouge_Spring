@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserCalendarRightsRepository extends CrudRepository<UserCalendarRights, Long> {
+public interface UserCalendarRightsRepository extends CrudRepository<UserCalendarRights, UserCalendarRightsId> {
 
 
 }
