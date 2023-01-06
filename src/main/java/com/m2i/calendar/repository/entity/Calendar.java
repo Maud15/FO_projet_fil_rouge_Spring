@@ -12,7 +12,8 @@ public class Calendar {
     @Column(name = "calendar_id")
     private Long id;
 
-    private String name;
+
+//    private String name;
 
     @Column(nullable = false)
     private boolean isMainCalendar;
@@ -20,9 +21,24 @@ public class Calendar {
     @OneToMany(targetEntity = UserCalendarRights.class, mappedBy = "calendar")
     private List<UserCalendarRights> calendarUserRightsList;
 
-    @ManyToMany
+    @OneToMany
+    @JoinColumn(name="event_id", referencedColumnName = "calendar_id")
     private List<Event> eventsList;
 
+    public Calendar(){
+
+    }
+    public Calendar(Long id){
+        this.id = id;
+    }
+
+    public Calendar(boolean isMainCalendar){
+        this.isMainCalendar = isMainCalendar;
+    }
+    public Calendar(Long id,  boolean isMainCalendar){
+        this.id = id;
+        this.isMainCalendar = isMainCalendar;
+    }
 
     public Long getId() {
         return id;
@@ -31,12 +47,12 @@ public class Calendar {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public boolean isMainCalendar() {
         return isMainCalendar;

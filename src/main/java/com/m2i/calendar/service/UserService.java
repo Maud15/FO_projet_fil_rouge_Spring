@@ -2,6 +2,7 @@ package com.m2i.calendar.service;
 
 import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
+import com.m2i.calendar.controller.exception.UserNotFoundException;
 import com.m2i.calendar.repository.RoleEnum;
 import com.m2i.calendar.repository.RoleRepository;
 import com.m2i.calendar.repository.UserRepository;
@@ -24,7 +25,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder encoder;
 
-    public void signup(SignupRequest dto) throws UserAlreadyExistsException {
+    public User signup(SignupRequest dto) throws UserAlreadyExistsException {
         boolean alreadyExist = userRepository.existsByPseudo(dto.getPseudo());
         if(alreadyExist) {
             throw new UserAlreadyExistsException(dto.getPseudo());
@@ -34,7 +35,7 @@ public class UserService {
             Role roleUser = roleRepo.findByName(RoleEnum.ROLE_USER);
             List<Role> roleList = Collections.singletonList(roleUser);
             newUser.setRoleList(roleList);
-            userRepository.save(newUser);
+            return userRepository.save(newUser);
         }
     }
 

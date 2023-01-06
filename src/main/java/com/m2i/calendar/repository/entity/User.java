@@ -44,6 +44,9 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(Long id){
+        this.id = id;
+    }
     public User(String pseudo, String email, String password, String firstname, String lastname/*, City city, List<Role> roleList*/) {
         this.pseudo = pseudo;
         this.email = email;

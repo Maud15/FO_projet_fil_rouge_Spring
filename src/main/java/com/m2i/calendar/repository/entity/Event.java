@@ -22,9 +22,35 @@ public class Event {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    @ManyToMany
-    private List<Calendar> calendarsList;
+    @Column (nullable = false)
+    private boolean isFullDay;
 
+    @Column (nullable = false)
+    private Long idCalendar;
+
+//    @ManyToOne //TODO Demander à Freddy
+//    @JoinColumn(name="calendar_id")
+//    private Calendar calendar;
+
+
+    public Event(){
+
+    }
+
+    public Event( String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isFullDay = isFullDay;
+
+    }
+    public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isFullDay = isFullDay;
+    }
 
     public Long getId() {
         return id;
@@ -54,10 +80,12 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public List<Calendar> getCalendarsList() {
-        return calendarsList;
+
+    public boolean isFullDay() {
+        return isFullDay;
     }
-    public void setCalendarsList(List<Calendar> calendarsList) {
-        this.calendarsList = calendarsList;
+
+    public void setFullDay(boolean fullDay) {
+        isFullDay = fullDay;
     }
 }

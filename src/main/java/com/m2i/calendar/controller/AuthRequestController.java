@@ -3,9 +3,12 @@ package com.m2i.calendar.controller;
 import com.m2i.calendar.controller.dto.SigninRequest;
 import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
+import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtResponse;
 import com.m2i.calendar.security.jwt.JwtUtils;
+import com.m2i.calendar.service.CalendarService;
+import com.m2i.calendar.service.UserCalendarRightsService;
 import com.m2i.calendar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +27,15 @@ import org.springframework.web.bind.annotation.*;
 public class AuthRequestController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+
+
+    @Autowired
+    private CalendarService calendarService;
+
+    @Autowired
+    private UserCalendarRightsService userCalendarRightsService;
+
     @Autowired
     private AuthenticationManager authManager;
     @Autowired
@@ -33,7 +44,9 @@ public class AuthRequestController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest dto) {
         try {
-            service.signup(dto);
+            User newUser = userService.signup(dto);
+            Calendar newCalendar = calendarService.create(true);
+            userCalendarRightsService.create(newUser.getId(), newCalendar.getId(), "owner" );
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch(UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
