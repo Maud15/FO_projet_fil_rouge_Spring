@@ -3,7 +3,6 @@ package com.m2i.calendar.repository.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 public class Event {
@@ -16,41 +15,38 @@ public class Event {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column (nullable = false)
-    private boolean isFullDay;
-
-    @Column (nullable = false)
-    private Long idCalendar;
+    @Column (name = "full_day", nullable = false)
+    private boolean fullDay;
 
 //    @ManyToOne //TODO Demander à Freddy
 //    @JoinColumn(name="calendar_id")
 //    private Calendar calendar;
+    @Column (name = "calendar_id", nullable = false)
+    private Long calendarId;
 
 
-    public Event(){
+    public Event(){}
 
-    }
-
-    public Event( String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+    public Event( String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isFullDay = isFullDay;
+        this.fullDay = fullDay;
 
     }
-    public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+    /*public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isFullDay = isFullDay;
-    }
+        this.fullDay = fullDay;
+    }*/
 
     public Long getId() {
         return id;
@@ -80,12 +76,17 @@ public class Event {
         this.endDate = endDate;
     }
 
-
     public boolean isFullDay() {
-        return isFullDay;
+        return fullDay;
+    }
+    public void setFullDay(boolean fullDay) {
+        this.fullDay = fullDay;
     }
 
-    public void setFullDay(boolean fullDay) {
-        isFullDay = fullDay;
+    public Long getCalendarId() {
+        return calendarId;
+    }
+    public void setCalendarId(Long calendarId) {
+        this.calendarId = calendarId;
     }
 }

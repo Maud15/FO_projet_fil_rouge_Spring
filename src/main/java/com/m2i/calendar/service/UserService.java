@@ -3,7 +3,6 @@ package com.m2i.calendar.service;
 import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.dto.UserInfoRequest;
 import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
-import com.m2i.calendar.controller.exception.UserNotFoundException;
 import com.m2i.calendar.repository.RoleEnum;
 import com.m2i.calendar.repository.RoleRepository;
 import com.m2i.calendar.repository.UserRepository;
@@ -27,15 +26,14 @@ public class UserService {
     private PasswordEncoder encoder;
 
     public User signup(SignupRequest dto) throws UserAlreadyExistsException {
-        boolean alreadyExist = userRepository.existsByPseudo(dto.getPseudo());
-        if(alreadyExist) {
+        if(userRepository.existsByPseudo(dto.getPseudo())) {
             throw new UserAlreadyExistsException(dto.getPseudo());
         } else {
-            User newUser = new User(dto.getPseudo(), dto.getEmail(), encoder.encode(dto.getPassword()), dto.getFirstname(), dto.getLastname());
             //Define role
             Role roleUser = roleRepo.findByName(RoleEnum.ROLE_USER);
             List<Role> roleList = Collections.singletonList(roleUser);
-            newUser.setRoleList(roleList);
+            //TODO : replace null by City
+            User newUser = new User(dto.getPseudo(), dto.getEmail(), encoder.encode(dto.getPassword()),dto.getFirstname(), dto.getLastname(),null, roleList);
             return userRepository.save(newUser);
         }
     }
