@@ -1,17 +1,11 @@
 package com.m2i.calendar.controller;
 
 import com.m2i.calendar.controller.dto.CalendarRequest;
-import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.exception.CalendarNotFoundException;
-import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
-import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.service.CalendarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:4200")

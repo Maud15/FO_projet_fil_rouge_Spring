@@ -1,6 +1,5 @@
 package com.m2i.calendar.service;
 
-import com.m2i.calendar.controller.CalendarController;
 import com.m2i.calendar.controller.dto.CalendarRequest;
 import com.m2i.calendar.controller.exception.CalendarNotFoundException;
 import com.m2i.calendar.repository.CalendarRepository;
