@@ -1,19 +1,15 @@
 package com.m2i.calendar.controller.dto;
 
-
-import com.m2i.calendar.repository.entity.Calendar;
-
 import java.time.LocalDate;
 
-public class EventRequest {
+public class EventUpdateRequest {
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean fullDay;
-    private Calendar calendar;
 
 
-    public EventRequest(){}
+    public EventUpdateRequest() {}
 
 
     public String getTitle() {
@@ -43,12 +39,4 @@ public class EventRequest {
     public void setFullDay(boolean fullDay) {
         this.fullDay = fullDay;
     }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
 }

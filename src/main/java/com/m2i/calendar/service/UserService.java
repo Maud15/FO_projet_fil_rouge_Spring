@@ -3,6 +3,7 @@ package com.m2i.calendar.service;
 import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.dto.UserInfoRequest;
 import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
+import com.m2i.calendar.controller.exception.UserNotFoundException;
 import com.m2i.calendar.repository.RoleEnum;
 import com.m2i.calendar.repository.RoleRepository;
 import com.m2i.calendar.repository.UserRepository;
@@ -44,20 +45,19 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(pseudo) );
     }
 
-    public void update(User user, UserInfoRequest userDto) throws  UserNotFoundException{
+    public void update(User user, UserInfoRequest userDto) {
 //        Optional<User> user = userRepository.findById(id);
 //        if(user.isEmpty()){
 //            throw new UserNotFoundException(userDto.getPseudo());
 //        }
-        User userUpdate = user;
-        userUpdate.setPseudo(userDto.getPseudo());
-        userUpdate.setEmail(userDto.getEmail());
-        userUpdate.setFirstname(userDto.getFirstname());
-        userUpdate.setLastname(userDto.getLastname());
-        userUpdate.setCity(userDto.getCity());
-        userUpdate.setCalendarRightsList(userDto.getCalendarRightsList());
-        userUpdate.setRoleList(userDto.getRoleList());
-        userRepository.save(userUpdate);
+        user.setPseudo(userDto.getPseudo());
+        user.setEmail(userDto.getEmail());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setCity(userDto.getCity());
+        user.setCalendarRightsList(userDto.getCalendarRightsList());
+        user.setRoleList(userDto.getRoleList());
+        userRepository.save(user);
     }
 
 }

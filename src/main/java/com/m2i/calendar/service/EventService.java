@@ -1,6 +1,7 @@
 package com.m2i.calendar.service;
 
 import com.m2i.calendar.controller.dto.EventRequest;
+import com.m2i.calendar.controller.dto.EventUpdateRequest;
 import com.m2i.calendar.controller.exception.EventNotFoundException;
 import com.m2i.calendar.repository.EventRepository;
 import com.m2i.calendar.repository.entity.Event;
@@ -28,7 +29,7 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    public void update(Long id, EventRequest eventDto) throws EventNotFoundException {
+    public void update(Long id, EventUpdateRequest eventDto) throws EventNotFoundException {
         Optional<Event> event = eventRepository.findById(id);
         if(event.isEmpty()){
             throw new EventNotFoundException(id);
@@ -39,7 +40,5 @@ public class EventService {
         eventUpdate.setEndDate(eventDto.getEndDate());
         eventUpdate.setFullDay(eventDto.isFullDay());
         eventRepository.save(eventUpdate);
-
-
     }
 }
