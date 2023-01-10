@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,12 +46,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(pseudo) );
     }
 
-    public void update(String pseudo, UserInfoRequest userDto) throws  UserNotFoundException{
-        Optional<User> user = userRepository.findUserByPseudo(userDto.getPseudo());
-        if(user.isEmpty()){
-            throw new UserNotFoundException(userDto.getPseudo());
-        }
-        User userUpdate = user.get();
+    public void update(User user, UserInfoRequest userDto) throws  UserNotFoundException{
+//        Optional<User> user = userRepository.findById(id);
+//        if(user.isEmpty()){
+//            throw new UserNotFoundException(userDto.getPseudo());
+//        }
+        User userUpdate = user;
         userUpdate.setPseudo(userDto.getPseudo());
         userUpdate.setEmail(userDto.getEmail());
         userUpdate.setFirstname(userDto.getFirstname());
@@ -61,7 +60,6 @@ public class UserService {
         userUpdate.setCalendarRightsList(userDto.getCalendarRightsList());
         userUpdate.setRoleList(userDto.getRoleList());
         userRepository.save(userUpdate);
-
     }
 
 }
