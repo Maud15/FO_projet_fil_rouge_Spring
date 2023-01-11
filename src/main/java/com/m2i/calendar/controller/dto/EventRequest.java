@@ -1,20 +1,31 @@
 package com.m2i.calendar.controller.dto;
 
-
-import com.m2i.calendar.repository.entity.Calendar;
-
-import java.time.LocalDate;
-
 public class EventRequest {
+    private Long id;
     private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private boolean fullDay;
-    private Calendar calendar;
+    private Long calendarId;
 
 
     public EventRequest(){}
 
+    public EventRequest(Long id, String title, String startDate, String endDate, boolean fullDay, Long calendarId) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.fullDay = fullDay;
+        this.calendarId = calendarId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -23,17 +34,17 @@ public class EventRequest {
         this.title = title;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -44,11 +55,11 @@ public class EventRequest {
         this.fullDay = fullDay;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public Long getCalendarId() {
+        return calendarId;
     }
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setCalendarId(Long calendarId) {
+        this.calendarId = calendarId;
     }
 
 }

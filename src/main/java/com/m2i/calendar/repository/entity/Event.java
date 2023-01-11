@@ -2,8 +2,6 @@ package com.m2i.calendar.repository.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 public class Event {
 
@@ -16,29 +14,27 @@ public class Event {
     private String title;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private String startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    private String endDate;
 
     @Column (name = "full_day", nullable = false)
     private boolean fullDay;
 
-//    @ManyToOne //TODO Demander à Freddy
-//    @JoinColumn(name="calendar_id")
-//    private Calendar calendar;
-    @Column (name = "calendar_id", nullable = false)
-    private Long calendarId;
+    @ManyToOne
+    @JoinColumn(name="calendar_id")
+    private Calendar calendar;
 
 
     public Event(){}
 
-    public Event( String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
+    public Event( String title, String startDate, String endDate, boolean fullDay, Calendar calendar) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.fullDay = fullDay;
-
+        this.calendar = calendar;
     }
     /*public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
         this.id = id;
@@ -62,17 +58,17 @@ public class Event {
         this.title = title;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -83,10 +79,10 @@ public class Event {
         this.fullDay = fullDay;
     }
 
-    public Long getCalendarId() {
-        return calendarId;
+    public Calendar getCalendar() {
+        return calendar;
     }
-    public void setCalendarId(Long calendarId) {
-        this.calendarId = calendarId;
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
 }

@@ -21,10 +21,9 @@ public class CalendarService {
     }
 
 
-    public CalendarRequest fetchCalendarById(Long calendarId) throws CalendarNotFoundException {
+    public Calendar fetchCalendarById(Long calendarId) throws CalendarNotFoundException {
         return calendarRepository
                 .findById(calendarId)
-                .map(c -> CalendarRequest.from(c))
                 .orElseThrow(() -> new CalendarNotFoundException(calendarId)) ;
     }
 

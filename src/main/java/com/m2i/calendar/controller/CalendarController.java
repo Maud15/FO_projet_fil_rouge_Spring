@@ -3,6 +3,7 @@ package com.m2i.calendar.controller;
 import com.m2i.calendar.controller.dto.CalendarRequest;
 import com.m2i.calendar.controller.exception.CalendarNotFoundException;
 import com.m2i.calendar.controller.exception.UserNotFoundException;
+import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtUtils;
 import com.m2i.calendar.service.CalendarService;
@@ -60,9 +61,8 @@ public class CalendarController {
         try {
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
-            CalendarRequest cal = calendarService.fetchCalendarById(calendarId);
             //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit/create/view OK
-            CalendarRequest calendar = calendarService.fetchCalendarById(calendarId);
+            Calendar calendar = calendarService.fetchCalendarById(calendarId);
             return ResponseEntity.ok(calendar);
 
         } catch(UserNotFoundException | CalendarNotFoundException e) {

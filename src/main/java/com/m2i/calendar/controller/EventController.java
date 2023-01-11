@@ -1,8 +1,8 @@
 package com.m2i.calendar.controller;
 
-import com.m2i.calendar.controller.dto.CalendarRequest;
 import com.m2i.calendar.controller.dto.EventRequest;
 import com.m2i.calendar.controller.dto.EventUpdateRequest;
+import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtUtils;
 import com.m2i.calendar.service.CalendarService;
@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
@@ -27,14 +29,15 @@ public class EventController {
     private JwtUtils jwtUtils;
 
     @PostMapping("/calendar/{calendarId}/event")
-    public ResponseEntity<?> createEvent(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId, @RequestBody EventRequest eventDto) {
+    public ResponseEntity<Long> createEvent(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId, @RequestBody EventRequest eventDto) {
         try {
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
-            CalendarRequest cal = calendarService.fetchCalendarById(calendarId);
+            Calendar cal = calendarService.fetchCalendarById(calendarId);
             //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit/create OK
-            eventService.create(eventDto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            eventDto.setCalendarId(calendarId);
+            EventRequest result = eventService.create(eventDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result.getId());
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -45,9 +48,9 @@ public class EventController {
         try{
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
-            CalendarRequest cal = calendarService.fetchCalendarById(calendarId);
-            //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit OK
+            Calendar cal = calendarService.fetchCalendarById(calendarId);
 
+            //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit OK
             eventService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e){
@@ -56,15 +59,45 @@ public class EventController {
     }
 
     @PutMapping("/calendar/{calendarId}/event/{eventId}")
-    public ResponseEntity<?> updateEvent(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId, @PathVariable("eventId") long eventId, @RequestBody EventUpdateRequest eventDto){
+    public ResponseEntity<EventUpdateRequest> updateEvent(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId, @PathVariable("eventId") long eventId, @RequestBody EventUpdateRequest eventDto){
         try{
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
-            CalendarRequest cal = calendarService.fetchCalendarById(calendarId);
+            Calendar cal = calendarService.fetchCalendarById(calendarId);
             //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit OK
 
-            eventService.update(eventId, eventDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            EventUpdateRequest result = eventService.update(eventId, eventDto);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/calendar/{calendarId}/event/{eventId}")
+    public ResponseEntity<EventRequest> getEvent(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId, @PathVariable("eventId") long eventId){
+        try{
+            String pseudo = jwtUtils.getUsernameFromToken(token);
+            User user = userService.getUserByPseudo(pseudo);
+            Calendar cal = calendarService.fetchCalendarById(calendarId);
+            //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit OK
+
+            EventRequest result = eventService.get(eventId);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/calendar/{calendarId}/events")
+    public ResponseEntity<List<EventRequest>> getAllEvents(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId){
+        try{
+            String pseudo = jwtUtils.getUsernameFromToken(token);
+            User user = userService.getUserByPseudo(pseudo);
+            Calendar cal = calendarService.fetchCalendarById(calendarId);
+            //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit OK
+
+            List<EventRequest> result = eventService.getAll(calendarId);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
