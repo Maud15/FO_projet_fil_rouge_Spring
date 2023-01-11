@@ -27,15 +27,14 @@ public class UserService {
     private PasswordEncoder encoder;
 
     public User signup(SignupRequest dto) throws UserAlreadyExistsException {
-        boolean alreadyExist = userRepository.existsByPseudo(dto.getPseudo());
-        if(alreadyExist) {
+        if(userRepository.existsByPseudo(dto.getPseudo())) {
             throw new UserAlreadyExistsException(dto.getPseudo());
         } else {
-            User newUser = new User(dto.getPseudo(), dto.getEmail(), encoder.encode(dto.getPassword()), dto.getFirstname(), dto.getLastname());
             //Define role
             Role roleUser = roleRepo.findByName(RoleEnum.ROLE_USER);
             List<Role> roleList = Collections.singletonList(roleUser);
-            newUser.setRoleList(roleList);
+            //TODO : replace null by City
+            User newUser = new User(dto.getPseudo(), dto.getEmail(), encoder.encode(dto.getPassword()),dto.getFirstname(), dto.getLastname(),null, roleList);
             return userRepository.save(newUser);
         }
     }
@@ -46,20 +45,19 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(pseudo) );
     }
 
-    public void update(User user, UserInfoRequest userDto) throws  UserNotFoundException{
+    public void update(User user, UserInfoRequest userDto) {
 //        Optional<User> user = userRepository.findById(id);
 //        if(user.isEmpty()){
 //            throw new UserNotFoundException(userDto.getPseudo());
 //        }
-        User userUpdate = user;
-        userUpdate.setPseudo(userDto.getPseudo());
-        userUpdate.setEmail(userDto.getEmail());
-        userUpdate.setFirstname(userDto.getFirstname());
-        userUpdate.setLastname(userDto.getLastname());
-        userUpdate.setCity(userDto.getCity());
-        userUpdate.setCalendarRightsList(userDto.getCalendarRightsList());
-        userUpdate.setRoleList(userDto.getRoleList());
-        userRepository.save(userUpdate);
+        user.setPseudo(userDto.getPseudo());
+        user.setEmail(userDto.getEmail());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setCity(userDto.getCity());
+        user.setCalendarRightsList(userDto.getCalendarRightsList());
+        user.setRoleList(userDto.getRoleList());
+        userRepository.save(user);
     }
 
 }

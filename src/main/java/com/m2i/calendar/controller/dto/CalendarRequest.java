@@ -26,7 +26,6 @@ public class CalendarRequest {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -34,7 +33,6 @@ public class CalendarRequest {
     public boolean isMainCalendar() {
         return mainCalendar;
     }
-
     public void setMainCalendar(boolean mainCalendar) {
         this.mainCalendar = mainCalendar;
     }
@@ -42,7 +40,6 @@ public class CalendarRequest {
     public List<UserCalendarRights> getCalendarUserRightsList() {
         return calendarUserRightsList;
     }
-
     public void setCalendarUserRightsList(List<UserCalendarRights> calendarUserRightsList) {
         this.calendarUserRightsList = calendarUserRightsList;
     }

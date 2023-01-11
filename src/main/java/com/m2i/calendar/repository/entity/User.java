@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String pseudo;
 
     @Column(nullable = false)
-    private String password; // todo : gérer le hashage du password pour ne pas le stocker en clair
+    private String password;
 
     private String firstname;
     private String lastname;
@@ -35,6 +35,11 @@ public class User implements UserDetails {
 
     //On le met en EAGER pour ne pas avoir de problème avec le getAuthorities
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> roleList;
 
     @OneToMany(targetEntity = UserCalendarRights.class, mappedBy = "user")
@@ -43,20 +48,16 @@ public class User implements UserDetails {
 
     public User() {
     }
-
-    public User(Long id){
-        this.id = id;
-    }
-    public User(String pseudo, String email, String password, String firstname, String lastname/*, City city, List<Role> roleList*/) {
+    public User(String pseudo, String email, String password, String firstname, String lastname, City city, List<Role> roleList) {
         this.pseudo = pseudo;
         this.email = email;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-        /*this.city = city;
-        this.roleList = roleList;*/
+        this.city = city;
+        this.roleList = roleList;
     }
-    public User(Long id, String pseudo, String email, String password, String firstname, String lastname, City city, List<Role> roleList, List<UserCalendarRights> calendarRightsList) {
+    /*public User(Long id, String pseudo, String email, String password, String firstname, String lastname, City city, List<Role> roleList, List<UserCalendarRights> calendarRightsList) {
         this.id = id;
         this.pseudo = pseudo;
         this.email = email;
@@ -66,7 +67,7 @@ public class User implements UserDetails {
         this.city = city;
         this.roleList = roleList;
         this.calendarRightsList = calendarRightsList;
-    }
+    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

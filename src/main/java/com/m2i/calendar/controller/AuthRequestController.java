@@ -28,14 +28,10 @@ public class AuthRequestController {
 
     @Autowired
     private UserService userService;
-
-
     @Autowired
     private CalendarService calendarService;
-
     @Autowired
     private UserCalendarRightsService userCalendarRightsService;
-
     @Autowired
     private AuthenticationManager authManager;
     @Autowired
@@ -82,8 +78,6 @@ public class AuthRequestController {
         } catch(BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
-
-
     }
 
 }

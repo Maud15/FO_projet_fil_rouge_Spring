@@ -13,9 +13,7 @@ public class UserCalendarRightsId implements Serializable {
     @Column(name="calendar_id")
     private Long calendarId;
 
-    public UserCalendarRightsId(){
-
-    }
+    public UserCalendarRightsId(){}
 
     public UserCalendarRightsId(Long userId, Long calendarId) {
         this.userId = userId;
@@ -25,7 +23,6 @@ public class UserCalendarRightsId implements Serializable {
     public Long getUserId() {
         return userId;
     }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -33,7 +30,6 @@ public class UserCalendarRightsId implements Serializable {
     public Long getCalendarId() {
         return calendarId;
     }
-
     public void setCalendarId(Long calendarId) {
         this.calendarId = calendarId;
     }
