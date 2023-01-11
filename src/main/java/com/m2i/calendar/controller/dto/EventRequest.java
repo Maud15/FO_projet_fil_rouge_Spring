@@ -4,7 +4,6 @@ package com.m2i.calendar.controller.dto;
 import com.m2i.calendar.repository.entity.Calendar;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class EventRequest {
     private String title;
@@ -12,7 +11,7 @@ public class EventRequest {
 
     private LocalDate endDate;
 
-    private boolean isFullDay;
+    private boolean fullDay;
 
 
     private Calendar calendar;
@@ -47,11 +46,11 @@ public class EventRequest {
     }
 
     public boolean isFullDay() {
-        return isFullDay;
+        return fullDay;
     }
 
     public void setFullDay(boolean fullDay) {
-        isFullDay = fullDay;
+        this.fullDay = fullDay;
     }
 
     public Calendar getCalendar() {

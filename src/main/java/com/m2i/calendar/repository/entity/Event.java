@@ -3,7 +3,6 @@ package com.m2i.calendar.repository.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 public class Event {
@@ -23,10 +22,10 @@ public class Event {
     private LocalDate endDate;
 
     @Column (nullable = false)
-    private boolean isFullDay;
+    private boolean fullDay;
 
     @Column (nullable = false)
-    private Long idCalendar;
+    private Long calendarId;
 
 //    @ManyToOne //TODO Demander à Freddy
 //    @JoinColumn(name="calendar_id")
@@ -37,19 +36,19 @@ public class Event {
 
     }
 
-    public Event( String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+    public Event( String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isFullDay = isFullDay;
+        this.fullDay = fullDay;
 
     }
-    public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean isFullDay) {
+    public Event(Long id, String title, LocalDate startDate, LocalDate endDate, boolean fullDay) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isFullDay = isFullDay;
+        this.fullDay = fullDay;
     }
 
     public Long getId() {
@@ -82,10 +81,10 @@ public class Event {
 
 
     public boolean isFullDay() {
-        return isFullDay;
+        return fullDay;
     }
 
     public void setFullDay(boolean fullDay) {
-        isFullDay = fullDay;
+        this.fullDay = fullDay;
     }
 }

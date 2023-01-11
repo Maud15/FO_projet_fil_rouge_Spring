@@ -8,7 +8,7 @@ import java.util.List;
 public class CalendarRequest {
 
     private String name;
-    private boolean isMainCalendar;
+    private boolean mainCalendar;
     private List<UserCalendarRights> calendarUserRightsList;
 
     public static CalendarRequest from(Calendar c){
@@ -32,11 +32,11 @@ public class CalendarRequest {
     }
 
     public boolean isMainCalendar() {
-        return isMainCalendar;
+        return mainCalendar;
     }
 
     public void setMainCalendar(boolean mainCalendar) {
-        isMainCalendar = mainCalendar;
+        this.mainCalendar = mainCalendar;
     }
 
     public List<UserCalendarRights> getCalendarUserRightsList() {
