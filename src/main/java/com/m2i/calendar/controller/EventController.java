@@ -2,12 +2,15 @@ package com.m2i.calendar.controller;
 
 import com.m2i.calendar.controller.dto.EventRequest;
 import com.m2i.calendar.controller.dto.EventUpdateRequest;
+import com.m2i.calendar.controller.exception.CalendarNotFoundException;
+import com.m2i.calendar.controller.exception.UserNotFoundException;
 import com.m2i.calendar.repository.RightsEnum;
 import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtUtils;
 import com.m2i.calendar.service.CalendarService;
 import com.m2i.calendar.service.EventService;
+import com.m2i.calendar.service.UserCalendarRightsService;
 import com.m2i.calendar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,8 @@ public class EventController {
     @Autowired
     private UserService userService;
     @Autowired
+    private UserCalendarRightsService userCalendarRightsService;
+    @Autowired
     private JwtUtils jwtUtils;
 
     @PostMapping("/calendar/{calendarId}/event")
@@ -34,11 +39,21 @@ public class EventController {
         try {
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
-            Calendar cal = calendarService.fetchCalendarById(calendarId);
-            //TODO: vérifier les droits de l'utilisateur sur ce calendrier -> owner/edit/create OK
-            eventDto.setCalendarId(calendarId);
+            Calendar calendar = calendarService.fetchCalendarById(calendarId);
+            /*Optional<RightsEnum> optRights = userCalendarRightsService.getRightsFromUserAndCalendar(user,calendar);
+            if(optRights.isPresent()) {
+                RightsEnum rights = optRights.get();
+                if(rights.equals(RightsEnum.CREATE) || rights.equals(RightsEnum.OWNER) || rights.equals(RightsEnum.EDIT)) {
+                    eventDto.setCalendarId(calendarId);
+                    EventRequest result = eventService.create(eventDto);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(result.getId());
+                }
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();*/
             EventRequest result = eventService.create(eventDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(result.getId());
+        } catch(CalendarNotFoundException | UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

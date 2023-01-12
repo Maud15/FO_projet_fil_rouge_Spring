@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -58,6 +59,14 @@ public class UserService {
         user.setCalendarRightsList(userDto.getCalendarRightsList());
         user.setRoleList(userDto.getRoleList());
         userRepository.save(user);
+    }
+
+    public User getUserByCalendarId(long calendarId) throws Exception {
+        Optional<User> optUser =  userRepository.findByCalendarAndRights(calendarId, "owner");
+        if(optUser.isPresent()) {
+            return optUser.get();
+        }
+        throw new Exception("User not found");
     }
 
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserInfoController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -43,6 +42,26 @@ public class UserInfoController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
+
+    @GetMapping("/calendar/{calendarId}/user")
+    public ResponseEntity<?> getUserByCalendarId(@RequestHeader("auth-token") String token, @PathVariable("calendarId") long calendarId) {
+        UserInfoRequest userDto = new UserInfoRequest();
+        try {
+            //TODO: vérifier les droits
+            User user = userService.getUserByCalendarId(calendarId);
+            userDto.setPseudo(user.getPseudo());
+            userDto.setEmail(user.getEmail());
+            userDto.setFirstname(user.getFirstname());
+            userDto.setLastname(user.getLastname());
+            userDto.setCity(user.getCity());
+            userDto.setRoleList(user.getRoleList());
+            userDto.setCalendarRightsList(user.getCalendarRightsList());
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @GetMapping("/users/profile")
     public ResponseEntity<?> getUserByPseudo(@RequestHeader("auth-token") String token ) throws UserNotFoundException {

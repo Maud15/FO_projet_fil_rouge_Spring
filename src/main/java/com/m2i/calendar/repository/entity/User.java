@@ -10,6 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@NamedQuery(
+        name="User.findByCalendarAndRights",
+        query= """
+                    select u from User u
+                    join fetch user_calendar_rights ucr join fetch Calendar c
+                    where u.id = ucr.userCalendarRightsId.userId
+                    and ucr.userCalendarRightsId.calendarId = :calendarId
+                    and ucr.rights = :rights
+""")
 public class User implements UserDetails {
 
     @Id
