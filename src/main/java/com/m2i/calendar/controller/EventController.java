@@ -2,6 +2,7 @@ package com.m2i.calendar.controller;
 
 import com.m2i.calendar.controller.dto.EventRequest;
 import com.m2i.calendar.controller.dto.EventUpdateRequest;
+import com.m2i.calendar.repository.RightsEnum;
 import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtUtils;
@@ -103,5 +104,51 @@ public class EventController {
         }
     }
 
+    @GetMapping("/calendar/main/events")
+    public ResponseEntity<List<EventRequest>> getAllMainCalEvents(@RequestHeader("auth-token") String token){
+        try{
+            String pseudo = jwtUtils.getUsernameFromToken(token);
+            User user = userService.getUserByPseudo(pseudo);
+            Calendar cal = calendarService.fetchCalendarByUserAndRights(user, RightsEnum.OWNER);
+            List<EventRequest> result = eventService.getAll(cal.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/calendar/main/event")
+    public ResponseEntity<Long> createEvent(@RequestHeader("auth-token") String token, @RequestBody EventRequest eventDto) {
+        try {
+            String pseudo = jwtUtils.getUsernameFromToken(token);
+            User user = userService.getUserByPseudo(pseudo);
+            Calendar cal = calendarService.fetchCalendarByUserAndRights(user, RightsEnum.OWNER);
+            eventDto.setCalendarId(cal.getId());
+            EventRequest result = eventService.create(eventDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result.getId());
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/calendar/main/event/{eventId}")
+    public ResponseEntity<?> deleteEvent(@PathVariable("eventId") long id){
+        try{
+            eventService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/calendar/main/event/{eventId}")
+    public ResponseEntity<EventUpdateRequest> updateEventFromMain(@PathVariable("eventId") long eventId, @RequestBody EventUpdateRequest eventDto){
+        try{
+            EventUpdateRequest result = eventService.update(eventId, eventDto);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

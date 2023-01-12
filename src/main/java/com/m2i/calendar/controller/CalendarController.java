@@ -71,18 +71,18 @@ public class CalendarController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping("/calendar/main")
+    /*@GetMapping("/calendar/main")
     public ResponseEntity<?> getMainCalendar(@RequestHeader("auth-token") String token) {
-        /*try {
+        *//*try {
             String pseudo = jwtUtils.getUsernameFromToken(token);
             User user = userService.getUserByPseudo(pseudo);
             CalendarRequest cal = calendarService.fetchCalendarByUserMain(user);
 
         } catch(UserNotFoundException | CalendarNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }*//*
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    }*/
 
 
 

@@ -3,6 +3,7 @@ package com.m2i.calendar.controller;
 import com.m2i.calendar.controller.dto.SigninRequest;
 import com.m2i.calendar.controller.dto.SignupRequest;
 import com.m2i.calendar.controller.exception.UserAlreadyExistsException;
+import com.m2i.calendar.repository.RightsEnum;
 import com.m2i.calendar.repository.entity.Calendar;
 import com.m2i.calendar.repository.entity.User;
 import com.m2i.calendar.security.jwt.JwtResponse;
@@ -42,7 +43,7 @@ public class AuthRequestController {
         try {
             User newUser = userService.signup(dto);
             Calendar newCalendar = calendarService.create(true);
-            userCalendarRightsService.create(newUser, newCalendar, "owner" );
+            userCalendarRightsService.create(newUser, newCalendar, RightsEnum.OWNER );
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch(UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
