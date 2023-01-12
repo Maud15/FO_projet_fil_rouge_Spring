@@ -5,6 +5,16 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQuery(
+        name="Calendar.findByUserAndRights",
+        query= """
+                    select c from Calendar c
+                    join fetch user_calendar_rights ucr join fetch User u
+                    where c.id = ucr.userCalendarRightsId.calendarId
+                    and ucr.userCalendarRightsId.userId = :userId
+                    and ucr.rights = :rights
+"""
+)
 public class Calendar {
 
     @Id
